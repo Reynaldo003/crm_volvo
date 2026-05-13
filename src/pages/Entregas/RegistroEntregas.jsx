@@ -34,7 +34,7 @@ import { createPortal } from "react-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 const BRAND_BLUE = "#131E5C";
-const HOURS = Array.from({ length: 13 }, (_, index) => `${String(index + 8).padStart(2, "0")}:00`);
+const HOURS = Array.from({ length: 11 }, (_, index) => `${String(index + 8).padStart(2, "0")}:00`);
 
 function normalizeStr(v) {
     return String(v ?? "").trim();
@@ -486,7 +486,7 @@ function AgendaWeekView({
     }, [rows]);
 
     const gridStyle = useMemo(() => ({ 
-    gridTemplateColumns: "120px repeat(13, minmax(210px, 1fr))" }), []);
+    gridTemplateColumns: "120px repeat(11, minmax(210px, 1fr))" }), []);
 
     const goPrevWeek = () => setCurrentWeekDate((prev) => addDays(prev, -7));
     const goNextWeek = () => setCurrentWeekDate((prev) => addDays(prev, 7));
@@ -533,7 +533,7 @@ function AgendaWeekView({
 
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 <div className="overflow-auto">
-                    <div className="min-w-[1320px]">
+                    <div className="min-w-[2200px]">
 <div className="sticky top-0 z-20 grid border-b border-slate-200 bg-slate-50" style={gridStyle}>
     <div className="px-3 py-3 text-xs font-bold text-slate-500">Día</div>
 
