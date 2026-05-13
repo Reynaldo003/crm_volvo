@@ -533,13 +533,12 @@ function AgendaWeekView({
 
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 <div className="overflow-auto">
-                    <div className="min-w-[2200px]">
+                    <div className="min-w-max">
 <div className="sticky top-0 z-20 grid border-b border-slate-200 bg-slate-50" style={gridStyle}>
-    <div className="px-3 py-3 text-xs font-bold text-slate-500">Día</div>
+    <div className="border-r border-slate-200 px-3 py-3 text-xs font-bold text-slate-500">Día</div>
 
     {HOURS.map((hour) => (
-        <div key={hour} className="border-l border-slate-200 px-3 py-3 text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black text-[#131E5C]">
+<div key={hour} className="border-l border-r border-slate-200 px-3 py-3 text-center">            <div className="mx-auto inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black text-[#131E5C]">
                 {hour}
             </div>
         </div>
@@ -561,7 +560,7 @@ function AgendaWeekView({
 
     return (
         <div key={iso} className="grid border-b border-dashed border-slate-300" style={gridStyle}>
-            <div className="bg-slate-50 px-3 py-3 text-xs font-bold text-slate-500">
+            <div className="border-r border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-500">
                 <div
                     className={[
                         "inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black",
@@ -582,7 +581,7 @@ function AgendaWeekView({
                 return (
                     <div
                         key={slotKey}
-                        className="group relative min-h-[116px] border-l border-slate-200 bg-white/80 p-1.5 transition hover:bg-slate-50"
+                        className="group relative min-h-[116px] border-l border-r border-slate-200 bg-white/80 p-1.5 transition hover:bg-slate-50"
                     >
                         <button
                             type="button"
