@@ -486,7 +486,7 @@ function AgendaWeekView({
     }, [rows]);
 
     const gridStyle = useMemo(() => ({ 
-    gridTemplateColumns: "120px repeat(11, minmax(210px, 1fr))" }), []);
+    gridTemplateColumns: "120px repeat(9, minmax(210px, 1fr))" }), []);
 
     const goPrevWeek = () => setCurrentWeekDate((prev) => addDays(prev, -7));
     const goNextWeek = () => setCurrentWeekDate((prev) => addDays(prev, 7));
