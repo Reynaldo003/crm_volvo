@@ -34,7 +34,7 @@ import { createPortal } from "react-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 const BRAND_BLUE = "#131E5C";
-const HOURS = Array.from({ length: 11 }, (_, index) => `${String(index + 8).padStart(2, "0")}:00`);
+const HOURS = Array.from({ length:9 }, (_, index) => `${String(index + 10).padStart(2, "0")}:00`);
 
 function normalizeStr(v) {
     return String(v ?? "").trim();
@@ -535,8 +535,7 @@ function AgendaWeekView({
                 <div className="overflow-auto">
                     <div className="min-w-max">
 <div className="sticky top-0 z-20 grid border-b border-slate-200 bg-slate-50" style={gridStyle}>
-    <div className="border-r border-slate-200 px-3 py-3 text-xs font-bold text-slate-500">Día</div>
-
+<div className="sticky left-0 z-30 border-r border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-500">Día</div>
     {HOURS.map((hour) => (
 <div key={hour} className="border-l border-r border-slate-200 px-3 py-3 text-center">            <div className="mx-auto inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black text-[#131E5C]">
                 {hour}
@@ -560,7 +559,7 @@ function AgendaWeekView({
 
     return (
         <div key={iso} className="grid border-b border-dashed border-slate-300" style={gridStyle}>
-            <div className="border-r border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-500">
+            <div className="sticky left-0 z-10 border-r border-slate-200 bg-slate-50 px-3 py-3 text-xs font-bold text-slate-500">
                 <div
                     className={[
                         "inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black",
@@ -1320,7 +1319,7 @@ export default function RegistroEntregas() {
 
             {viewMode === "tabla" ? (
                 <div className="overflow-hidden rounded-lg bg-white/[0.03] shadow-lg">
-                    <div className="overflow-auto">
+                    <div className="overflow-auto" style={{ maxHeight: "70vh" }}>
                         <table className="min-w-full text-left text-sm">
                             <thead className="font-vw-header border border-black bg-[#131E5C] text-xs text-white">
                                 <tr>
