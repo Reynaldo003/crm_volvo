@@ -1,13 +1,13 @@
 // src/pages/Clickup/ClickupTimeLine.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Calendar, Flag, GripHorizontal, Plus, Clock } from "lucide-react";
+import { Calendar, ChevronDown, ChevronRight, CheckCircle2, Flag, GripHorizontal, Plus, Clock } from "lucide-react";
 import {
     BRAND_BLUE, EmptyState, Pill, PriorityBadge,
     addDays, clamp, cls, diffDays, formatDateShort,
     formatMonth, toKey, toLocalDateOnly,
 } from "./ClickupUI";
 
-const LEFT_COL_W = 320;
+const LEFT_COL_W = 360;
 const DAY_W = 44;
 const ROW_H = 88;
 
@@ -66,6 +66,12 @@ export default function ClickupTimelineView({
     const [quickListId, setQuickListId] = useState("");
     const [quickDate, setQuickDate] = useState(() => toKey(new Date()));
     const [tooltip, setTooltip] = useState(null);
+
+    const [expandedSubs, setExpandedSubs] = useState({});
+
+     function toggleSubs(taskId) {
+    setExpandedSubs(prev => ({ ...prev, [taskId]: !prev[taskId] }));
+    }
 
     const safeLists = Array.isArray(lists) ? lists : [];
     useEffect(() => {
@@ -316,32 +322,86 @@ export default function ClickupTimelineView({
                                         className="grid border-b border-black/[0.04] hover:bg-slate-50/50 transition-colors"
                                         style={{ gridTemplateColumns: `${LEFT_COL_W}px ${timelineWidth}px`, minHeight: ROW_H }}
                                     >
-                                        {/* Left column */}
-                                        <div className="sticky left-0 z-10 border-r border-black/[0.07] bg-white px-4 py-3">
-                                            <div className="min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className={cls("h-2 w-2 flex-shrink-0 rounded-full", tone.dot)} />
-                                                    <h3 className="truncate text-[13px] font-black text-[#131E5C]">
-                                                        {task.title || "Sin título"}
-                                                    </h3>
-                                                </div>
-                                                {task.description && (
-                                                    <p className="mb-1.5 line-clamp-1 pl-4 text-[11px] text-black/45 leading-relaxed">
-                                                        {task.description}
-                                                    </p>
-                                                )}
-                                                <div className="flex flex-wrap items-center gap-1.5 pl-4">
-                                                    <span className={cls("rounded-full border px-2 py-0.5 text-[10px] font-bold", statusChip(listName))}>
-                                                        {listName}
-                                                    </span>
-                                                    <PriorityBadge value={task.priority} />
-                                                    <span className="inline-flex items-center gap-1 text-[10px] text-black/40">
-                                                        <Flag className="h-3 w-3" />
-                                                        {formatDateShort(toKey(start))} → {formatDateShort(toKey(end))}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       {/* Left column */}
+<div className="sticky left-0 z-10 border-r border-black/[0.07] bg-white px-4 py-3">
+    <div className="min-w-0">
+        {/* Título */}
+        <div className="flex items-center gap-2 mb-1">
+            <span className={cls("h-2 w-2 flex-shrink-0 rounded-full", tone.dot)} />
+            <h3 className="truncate text-[13px] font-black text-[#131E5C]">
+                {task.title || "Sin título"}
+            </h3>
+        </div>
+
+        {/* Badges */}
+        <div className="flex flex-wrap items-center gap-1.5 pl-4 mb-2">
+            <span className={cls("rounded-full border px-2 py-0.5 text-[10px] font-bold", statusChip(listName))}>
+                {listName}
+            </span>
+            <PriorityBadge value={task.priority} />
+            <span className="inline-flex items-center gap-1 text-[10px] text-black/40">
+                <Flag className="h-3 w-3" />
+                {formatDateShort(toKey(start))} → {formatDateShort(toKey(end))}
+            </span>
+        </div>
+
+        {/* Descripción del Problema */}
+        {task.descripcion_problema ? (
+            <div className="pl-4 mb-1.5">
+                <div className="text-[10px] font-black uppercase tracking-wide text-rose-500 mb-0.5">
+                    Problema
+                </div>
+                <p className="line-clamp-2 text-[11px] text-black/55 leading-relaxed">
+                    {task.descripcion_problema}
+                </p>
+            </div>
+        ) : null}
+
+        {/* Desarrollo de la Estrategia */}
+        {task.desarrollo_estrategia ? (
+            <div className="pl-4 mb-1.5">
+                <div className="text-[10px] font-black uppercase tracking-wide text-amber-500 mb-0.5">
+                    Estrategia
+                </div>
+                <p className="line-clamp-2 text-[11px] text-black/55 leading-relaxed">
+                    {task.desarrollo_estrategia}
+                </p>
+            </div>
+        ) : null}
+
+        {/* Subtareas desplegables */}
+        {Array.isArray(task.subtareas) && task.subtareas.length > 0 ? (
+            <div className="pl-4 mt-1.5">
+                <button
+                    type="button"
+                    onClick={() => toggleSubs(task.id)}
+                    className="inline-flex items-center gap-1 text-[10px] font-black text-[#131E5C] hover:underline"
+                >
+                    {expandedSubs[task.id]
+                        ? <ChevronDown className="h-3 w-3" />
+                        : <ChevronRight className="h-3 w-3" />}
+                    Subtareas ({task.subtareas.filter(s => s.done).length}/{task.subtareas.length})
+                </button>
+
+                {expandedSubs[task.id] ? (
+                    <div className="mt-1.5 grid gap-1">
+                        {task.subtareas.map((s, i) => (
+                            <div key={i}
+                                className="flex items-center gap-1.5 rounded-lg bg-slate-50 px-2 py-1 text-[11px]">
+                                {s.done
+                                    ? <CheckCircle2 className="h-3 w-3 text-emerald-500 shrink-0" />
+                                    : <Clock className="h-3 w-3 text-slate-400 shrink-0" />}
+                                <span className={cls("truncate", s.done && "line-through text-black/35")}>
+                                    {s.title || s.titulo || "—"}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
+        ) : null}
+    </div>
+</div>
 
                                         {/* Timeline area */}
                                         <div className="relative">

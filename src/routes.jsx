@@ -2,6 +2,9 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+import TimeForActionLayout from "./pages/TimeForAction/TimeForActionLayout";
+import TimeForAction from "./pages/TimeForAction/TimeForAction";
+
 import ProtectedLayout from "./auth/ProtectedLayout";
 import RequirePermission from "./auth/RequirePermission";
 
@@ -492,6 +495,21 @@ export const router = createBrowserRouter(
                                 },
                             ],
                         },
+
+                        {
+    path: "timeforaction",
+    element: (
+        <RequirePermission anyOf={["USUARIOS_ADMIN"]}>
+            <TimeForActionLayout />
+        </RequirePermission>
+    ),
+    children: [
+        {
+            index: true,
+            element: <TimeForAction />,
+        },
+    ],
+},
 
                         {
                             path: "qr",

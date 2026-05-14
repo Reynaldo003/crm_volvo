@@ -485,8 +485,12 @@ function AgendaWeekView({
         });
     }, [rows]);
 
-    const gridStyle = useMemo(() => ({ 
-    gridTemplateColumns: "120px repeat(9, minmax(210px, 1fr))" }), []);
+   const gridStyle = useMemo(() => ({ 
+    gridTemplateColumns: `140px repeat(${HOURS.length}, minmax(220px, 1fr))`,
+    backgroundColor: "#ffffff",
+    borderRadius: "16px",
+    overflow: "hidden"
+}), []);
 
     const goPrevWeek = () => setCurrentWeekDate((prev) => addDays(prev, -7));
     const goNextWeek = () => setCurrentWeekDate((prev) => addDays(prev, 7));
